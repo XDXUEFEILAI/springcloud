@@ -1,0 +1,32 @@
+spring:
+    application:
+        name: eureka_client_zuul
+    zipkin:
+        sender:
+            type: web
+        base-url: http://localhost:9411/
+eureka:
+    client:
+        service-url:
+            defaultZone: http://localhost:8761/eureka/
+
+#默认情况下zuul会自动代理所有注册到注册中心的服务，默认的路由规则是：http://ZUUL_HOST:ZUUL_PORT/微服务在Eureka上的serviceId/**会被转发到serviceId对应的微服务
+zuul:
+    #定义路由规则：
+    routes:
+        #路由id
+        ticket-A-window:
+            path: /ticket-A-window/**
+            #            url: http://www.baidu.com
+            serviceId: EUREKA_CLIENT_FEGIN_CONSUMER
+        #路由id
+        ticket-B-window:
+            #路由id下匹配的路径
+            path: /ticket-B-window/**
+            #匹配路径，转发到对应域名地址
+            #            url: http://www.baidu.com
+            #匹配路径下访问对应的服务名
+#            serviceId: EUREKA_CLIENT_RIBBON_CONSUMER
+
+server:
+    port: 8086
